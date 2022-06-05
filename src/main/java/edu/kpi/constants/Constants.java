@@ -1,10 +1,11 @@
-package edu.kpi.lab01.constants;
+package edu.kpi.constants;
 
 public class Constants {
 
     public static class Pages {
 
         public static final String SSH_COMMAND = "/sshCommand.jsp";
+        public static final String REGISTER_COMMAND = "/auth/register.jsp";
     }
 
     public static class Parameters {
@@ -14,8 +15,9 @@ public class Constants {
         public static final String PORT = "port";
         public static final String PASSWORD = "password";
         public static final String COMMAND = "command";
-
         public static final String RESULT = "result";
+        public static final String REPEATED_PASSWORD = "repeatedPassword";
+        public static final String STATUS = "status";
     }
 
     public static class Format {

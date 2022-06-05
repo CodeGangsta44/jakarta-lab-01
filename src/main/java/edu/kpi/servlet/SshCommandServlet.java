@@ -1,9 +1,9 @@
-package edu.kpi.lab01;
+package edu.kpi.servlet;
 
-import edu.kpi.lab01.parameters.SshCommandParameter;
-import edu.kpi.lab01.service.ExecutionService;
-import edu.kpi.lab01.service.impl.SshCommandExecutionService;
-import edu.kpi.lab01.utils.SshCommandUtils;
+import edu.kpi.parameters.SshCommandParameter;
+import edu.kpi.service.ExecutionService;
+import edu.kpi.service.impl.SshCommandExecutionService;
+import edu.kpi.utils.SshCommandUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,10 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.stream.Stream;
 
-import static edu.kpi.lab01.constants.Constants.Pages.SSH_COMMAND;
+import static edu.kpi.constants.Constants.Pages.SSH_COMMAND;
 
 @WebServlet(name = "SshCommandServlet", value = "/ssh-command")
 public class SshCommandServlet extends HttpServlet {

@@ -1,14 +1,11 @@
-package edu.kpi.lab01.utils;
+package edu.kpi.utils;
 
-import edu.kpi.lab01.parameters.SshCommandParameter;
+import edu.kpi.parameters.SshCommandParameter;
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import static edu.kpi.lab01.constants.Constants.Format.BREAK;
-import static edu.kpi.lab01.constants.Constants.Format.LINE_ENDING;
-import static edu.kpi.lab01.constants.Constants.Parameters.*;
+import static edu.kpi.constants.Constants.Format.BREAK;
+import static edu.kpi.constants.Constants.Format.LINE_ENDING;
+import static edu.kpi.constants.Constants.Parameters.*;
 
 public class SshCommandUtils {
 

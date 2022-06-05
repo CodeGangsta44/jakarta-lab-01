@@ -1,4 +1,4 @@
-package edu.kpi.lab01.parameters;
+package edu.kpi.parameters;
 
 import lombok.Builder;
 import lombok.Data;

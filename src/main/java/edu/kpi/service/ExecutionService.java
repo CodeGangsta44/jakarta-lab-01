@@ -1,4 +1,4 @@
-package edu.kpi.lab01.service;
+package edu.kpi.service;
 
 public interface ExecutionService<T> {
 

@@ -1,9 +1,9 @@
-package edu.kpi.lab01.service.impl;
+package edu.kpi.service.impl;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import edu.kpi.lab01.parameters.SshCommandParameter;
+import edu.kpi.parameters.SshCommandParameter;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,8 +15,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.ByteArrayOutputStream;
 
-import static edu.kpi.lab01.constants.Constants.Configuration.*;
-import static edu.kpi.lab01.constants.Constants.Format.EMPTY_STRING;
+import static edu.kpi.constants.Constants.Configuration.*;
+import static edu.kpi.constants.Constants.Format.EMPTY_STRING;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SshCommandExecutionServiceTest {

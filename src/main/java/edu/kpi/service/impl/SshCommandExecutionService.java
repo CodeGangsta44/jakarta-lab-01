@@ -1,11 +1,12 @@
-package edu.kpi.lab01.service.impl;
+package edu.kpi.service.impl;
 
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
-import edu.kpi.lab01.parameters.SshCommandParameter;
-import edu.kpi.lab01.service.ExecutionService;
+import edu.kpi.constants.Constants;
+import edu.kpi.parameters.SshCommandParameter;
+import edu.kpi.service.ExecutionService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -14,10 +15,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import static edu.kpi.lab01.constants.Constants.Configuration.*;
-import static edu.kpi.lab01.constants.Constants.Format.EMPTY_STRING;
-import static edu.kpi.lab01.constants.Constants.Messages.*;
 
 public class SshCommandExecutionService implements ExecutionService<SshCommandParameter> {
 
@@ -40,12 +37,12 @@ public class SshCommandExecutionService implements ExecutionService<SshCommandPa
             waitForExecution(channel);
 
             return Optional.of(responseStream.toString())
-                    .filter(Predicate.not(EMPTY_STRING::equals))
+                    .filter(Predicate.not(Constants.Format.EMPTY_STRING::equals))
                     .orElseGet(this::createGenericResponse);
 
         } catch (final Exception e) {
 
-            return String.format(ERROR_RECEIVED, e.getMessage());
+            return String.format(Constants.Messages.ERROR_RECEIVED, e.getMessage());
 
         } finally {
 
@@ -66,31 +63,31 @@ public class SshCommandExecutionService implements ExecutionService<SshCommandPa
 
     protected String createGenericResponse() {
 
-        return String.format(GENERIC_EXECUTION_COMPLETED_MESSAGE, DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).format(ZonedDateTime.now()));
+        return String.format(Constants.Messages.GENERIC_EXECUTION_COMPLETED_MESSAGE, DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).format(ZonedDateTime.now()));
     }
 
     protected int getCheckInterval() {
 
-        return CHECK_INTERVAL;
+        return Constants.Configuration.CHECK_INTERVAL;
     }
 
     protected int getTimeout() {
 
-        return TIMEOUT;
+        return Constants.Configuration.TIMEOUT;
     }
 
     private Session getSession(final SshCommandParameter parameter) throws Exception {
 
         final Session session = createSession(parameter);
         session.setPassword(parameter.getPassword());
-        session.setConfig(STRICT_HOST_KEY_CHECKING, DISABLED);
+        session.setConfig(Constants.Configuration.STRICT_HOST_KEY_CHECKING, Constants.Configuration.DISABLED);
 
         return session;
     }
 
     private ChannelExec createChannel(final SshCommandParameter parameter, final Session session, final OutputStream outputStream) throws Exception {
 
-        final ChannelExec channel = (ChannelExec) session.openChannel(CHANNEL);
+        final ChannelExec channel = (ChannelExec) session.openChannel(Constants.Configuration.CHANNEL);
         channel.setCommand(parameter.getCommand());
         channel.setOutputStream(outputStream);
 
@@ -103,7 +100,7 @@ public class SshCommandExecutionService implements ExecutionService<SshCommandPa
 
             if (getCheckInterval() * i > getTimeout()) {
 
-                throw new IllegalStateException(String.format(TIMEOUT_MESSAGE, getTimeout()));
+                throw new IllegalStateException(String.format(Constants.Messages.TIMEOUT_MESSAGE, getTimeout()));
             }
 
             Thread.sleep(getCheckInterval());
