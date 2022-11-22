@@ -1,9 +1,6 @@
 package edu.kpi.servlet;
 
 import edu.kpi.dto.RegistrationStatus;
-import edu.kpi.model.User;
-import edu.kpi.model.facade.UserFacadeLocal;
-import edu.kpi.model.facade.impl.UserFacade;
 import edu.kpi.parameters.RegisterParameter;
 import edu.kpi.service.UserServiceLocal;
 import edu.kpi.utils.AuthUtils;
@@ -16,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static edu.kpi.constants.Constants.Pages.REGISTER_COMMAND;
+import static edu.kpi.constants.Constants.Pages.REGISTER;
 
 @WebServlet(name = "RegisterServlet", value = "/register")
 public class RegisterServlet extends HttpServlet {
@@ -27,7 +24,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
 
-        request.getRequestDispatcher(REGISTER_COMMAND)
+        request.getRequestDispatcher(REGISTER)
                 .forward(request, response);
     }
 
@@ -50,7 +47,14 @@ public class RegisterServlet extends HttpServlet {
         AuthUtils.populateModelWithRegisterParameters(request, registerParameter);
         AuthUtils.populateModelWithRegisterStatus(request, status);
 
-        request.getRequestDispatcher(REGISTER_COMMAND)
-                .forward(request, response);
+        if (RegistrationStatus.SUCCESS.equals(status)) {
+
+            response.sendRedirect(request.getContextPath() + "/home");
+
+        } else {
+
+            request.getRequestDispatcher(REGISTER)
+                    .forward(request, response);
+        }
     }
 }

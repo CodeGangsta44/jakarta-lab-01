@@ -1,5 +1,6 @@
 package edu.kpi.parameters;
 
+import edu.kpi.dto.ConnectionDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,9 +8,6 @@ import lombok.Data;
 @Builder
 public class SshCommandParameter {
 
-    private String username;
-    private String host;
-    private int port;
-    private String password;
+    private ConnectionDto connection;
     private String command;
 }

@@ -3,6 +3,7 @@ package edu.kpi.service.impl;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import edu.kpi.dto.ConnectionDto;
 import edu.kpi.parameters.SshCommandParameter;
 import org.junit.Assert;
 import org.junit.Before;
@@ -47,15 +48,19 @@ public class SshCommandExecutionServiceTest {
     @Before
     public void setUp() throws Exception {
 
-        parameter = SshCommandParameter.builder()
+        final ConnectionDto connection = ConnectionDto.builder()
                 .username(USERNAME_PARAMETER)
                 .host(HOST_PARAMETER)
                 .port(PORT_PARAMETER)
                 .password(PASSWORD_PARAMETER)
+                .build();
+
+        parameter = SshCommandParameter.builder()
+                .connection(connection)
                 .command(COMMAND_PARAMETER)
                 .build();
 
-        Mockito.doReturn(session).when(unit).createSession(parameter);
+        Mockito.doReturn(session).when(unit).createSession(connection);
         Mockito.doReturn(outputStream).when(unit).createOutputStream();
         Mockito.doReturn(GENERIC_RESULT).when(unit).createGenericResponse();
         Mockito.doReturn(CHECK_INTERVAL).when(unit).getCheckInterval();

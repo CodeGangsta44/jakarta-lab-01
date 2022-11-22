@@ -5,8 +5,10 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import edu.kpi.constants.Constants;
+import edu.kpi.dto.ConnectionDto;
 import edu.kpi.parameters.SshCommandParameter;
-import edu.kpi.service.ExecutionService;
+import edu.kpi.service.ExecutionServiceLocal;
+import jakarta.ejb.Stateless;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
@@ -16,7 +18,8 @@ import java.time.format.FormatStyle;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-public class SshCommandExecutionService implements ExecutionService<SshCommandParameter> {
+@Stateless
+public class SshCommandExecutionService implements ExecutionServiceLocal<SshCommandParameter> {
 
     @Override
     public String execute(final SshCommandParameter parameter) {
@@ -26,7 +29,7 @@ public class SshCommandExecutionService implements ExecutionService<SshCommandPa
 
         try {
 
-            session = getSession(parameter);
+            session = getSession(parameter.getConnection());
             session.connect();
 
             OutputStream responseStream = createOutputStream();
@@ -51,9 +54,9 @@ public class SshCommandExecutionService implements ExecutionService<SshCommandPa
         }
     }
 
-    protected Session createSession(final SshCommandParameter parameter) throws Exception {
+    protected Session createSession(final ConnectionDto connection) throws Exception {
 
-        return new JSch().getSession(parameter.getUsername(), parameter.getHost(), parameter.getPort());
+        return new JSch().getSession(connection.getUsername(), connection.getHost(), connection.getPort());
     }
 
     protected OutputStream createOutputStream() {
@@ -76,10 +79,10 @@ public class SshCommandExecutionService implements ExecutionService<SshCommandPa
         return Constants.Configuration.TIMEOUT;
     }
 
-    private Session getSession(final SshCommandParameter parameter) throws Exception {
+    private Session getSession(final ConnectionDto connection) throws Exception {
 
-        final Session session = createSession(parameter);
-        session.setPassword(parameter.getPassword());
+        final Session session = createSession(connection);
+        session.setPassword(connection.getPassword());
         session.setConfig(Constants.Configuration.STRICT_HOST_KEY_CHECKING, Constants.Configuration.DISABLED);
 
         return session;

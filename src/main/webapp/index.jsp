@@ -7,13 +7,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 <body>
+<%@ include file="common/header.jsp" %>
 <div class="container container-md" style="padding-top: 30px">
-    <div class="row">
-        <div class="alert alert-secondary" role="alert">
-            <h2>Jakarta EE</h2>
-            <h3 style="margin-bottom: 0">Lab #1: <a
-                    href="https://docs.google.com/document/d/1KWbYxhOoiKXpy0e_teG0mrnIsQ4lMU6Y/edit">Servlet
-                API</a></h3>
+    <div class="row" style="margin-left: 0; margin-right: 0">
+        <div class="alert alert-secondary" role="alert" style="padding-top: 10px">
+            <h4>Jakarta EE</h4>
+            <h5 style="margin-bottom: 0">Labs:
+                <a href="https://docs.google.com/document/d/1KWbYxhOoiKXpy0e_teG0mrnIsQ4lMU6Y/edit">Servlet API</a>
+                |
+                <a href="https://docs.google.com/document/d/1zAURZM20fDARZ5dwjwn79qgfuAU3mPz0/edit">MVC</a>
+                |
+                <a href="https://docs.google.com/document/d/1cm_mYEmYRQxX0-Z2o_GbgeBksQWjPTlc/edit">EJB</a>
+                |
+                <a href="https://docs.google.com/document/d/1PZOEXvDf_NRUDMELlftaZNIr4FsAEGyq/edit">JPA</a>
+            </h5>
         </div>
     </div>
     <div class="row" style="padding-top: 20px">
@@ -65,7 +72,7 @@
                             <h3 style="float: left; margin-bottom: 0">Functional</h3>
                         </div>
                         <div class="col">
-                            <a href="/ssh-command">
+                            <a href="ssh-command">
                                 <button style="float: right;" type="button" class="btn btn-outline-success btn-sm">
                                     Try it out!
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-terminal" viewBox="0 0 16 16">

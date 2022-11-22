@@ -5,15 +5,17 @@ import edu.kpi.exception.PasswordsNotEqualsException;
 import edu.kpi.exception.UsernameNotUniqueException;
 import edu.kpi.parameters.RegisterParameter;
 import edu.kpi.parameters.SshCommandParameter;
+import jakarta.ejb.EJBException;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static edu.kpi.constants.Constants.Parameters.*;
 
 public class AuthUtils {
 
-    private static final Map<Class<? extends Exception>, RegistrationStatus> REGISTRATION_STATUS_MAP =
+    private static final Map<Class<? extends Throwable>, RegistrationStatus> REGISTRATION_STATUS_MAP =
             Map.ofEntries(
                     Map.entry(UsernameNotUniqueException.class, RegistrationStatus.NOT_UNIQUE_USERNAME),
                     Map.entry(PasswordsNotEqualsException.class, RegistrationStatus.PASSWORDS_NOT_EQUALS));
@@ -29,7 +31,13 @@ public class AuthUtils {
 
     public static RegistrationStatus getRegistrationStatus(final Exception exception) {
 
-        return REGISTRATION_STATUS_MAP.get(exception.getClass());
+        return Optional.of(exception)
+                .filter(EJBException.class::isInstance)
+                .map(EJBException.class::cast)
+                .map(EJBException::getCause)
+                .map(Throwable::getClass)
+                .map(REGISTRATION_STATUS_MAP::get)
+                .orElse(null);
     }
 
     public static void populateModelWithRegisterParameters(final HttpServletRequest request, final RegisterParameter parameter) {

@@ -6,19 +6,27 @@ import edu.kpi.model.User;
 import edu.kpi.model.facade.UserFacadeLocal;
 import edu.kpi.parameters.RegisterParameter;
 import edu.kpi.service.UserServiceLocal;
+import edu.kpi.utils.BCryptUtils;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.SecurityContext;
+
+import java.util.Optional;
 
 @Stateless
 public class UserService implements UserServiceLocal {
 
     @EJB
-    private UserFacadeLocal userFacadeLocal;
+    private UserFacadeLocal userFacade;
+
+    @Inject
+    private SecurityContext securityContext;
 
     @Override
     public void registerUser(final RegisterParameter parameter) {
 
-        userFacadeLocal.findByUsername(parameter.getUsername())
+        userFacade.findByUsername(parameter.getUsername())
                 .ifPresent((user) -> {
                     throw new UsernameNotUniqueException();
                 });
@@ -29,10 +37,21 @@ public class UserService implements UserServiceLocal {
         }
 
         final User user = new User();
-        user.setPassword(parameter.getUsername());
-        user.setPassword(parameter.getPassword());
+        user.setUsername(parameter.getUsername());
+        user.setPassword(BCryptUtils.hashPassword(parameter.getPassword()));
 
-        userFacadeLocal.create(user);
+        userFacade.create(user);
+    }
 
+    @Override
+    public Optional<User> findUserByUsername(final String username) {
+
+        return userFacade.findByUsername(username);
+    }
+
+    @Override
+    public Optional<User> getCurrentUser() {
+
+        return userFacade.findByUsername(securityContext.getCallerPrincipal().getName());
     }
 }
